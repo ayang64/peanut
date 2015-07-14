@@ -10,6 +10,8 @@ BISON := bison
 BISON_FLAGS :=
 FLEX := flex
 
+
+
 %.tab.c %.tab.h : %.y 
 	$(BISON) $(BISON_FLAGS) -d $<
 
@@ -18,7 +20,7 @@ FLEX := flex
 
 .PHONY : clean
 
-test : $(OBJECTS) parse.tab.o scan.yy.o
+pn : $(OBJECTS) parse.tab.o scan.yy.o
 	$(CC) $^ -o $@ -ll -ly
 
 $(TARGET) : $(OBJECTS) parse.tab.o scan.yy.o
@@ -33,4 +35,4 @@ $(OBJECTS) : $(SOURCES)
 -include *.d
 
 clean:
-	rm -f $(TARGET) *.o *.tab.* *.d *.yy.*
+	rm -f $(TARGET) *.o *.tab.* *.d *.yy.* pn
