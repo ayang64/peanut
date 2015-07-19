@@ -1,4 +1,3 @@
-
 SOURCES := $(wildcard *.c)
 OBJECTS := list.o
 TARGET	:= libpn.so
@@ -7,10 +6,8 @@ CFLAGS := -Wall -MMD -std=gnu11 -fPIC
 LDFLAGS := -shared
 
 BISON := bison
-BISON_FLAGS :=
+BISON_FLAGS := -t -r all
 FLEX := flex
-
-
 
 %.tab.c %.tab.h : %.y 
 	$(BISON) $(BISON_FLAGS) -d $<

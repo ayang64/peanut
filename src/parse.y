@@ -2,34 +2,50 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+
+#define BDEBUGF(f,...)		({ fprintf(stderr, "BISON: " #f "\n", ##__VA_ARGS__); })
 %}
 
 %locations
 %pure-parser
-%left ATOM QSTRING SYMBOL_EXPANSION
+%left ATOM QSTRING ELEMENT ATTRIBUTE SYMBOL_EXPANSION INTEGER
 
 %%
 
-s_expression	:			list
-										| '(' list ')'
-										| 
+s_expr:							paren_list
+										| s_expr paren_list
+										{
+											BDEBUGF("s_expr");
+										}
 										;
 
-list					:			lnode
-										| list lnode
+paren_list:					'(' item_list ')'
+										{
+											BDEBUGF("list");
+										}
+
+
+item_list:					item
+										| item_list item
+										{
+											BDEBUGF("item_list");
+										}
 										;
 
-
-lnode					:			atom
-										| list
-										| s_expression
+item:								atom
+										| paren_list
+										{
+											BDEBUGF("item");
+										}	
 										;
 
-atom					:			ATOM
+atom:								%empty
+										| ATOM
+										| ATTRIBUTE
+										| ELEMENT
+										| INTEGER
 										| QSTRING
-										;
-
-empty					:			/* empty */
+										| SYMBOL_EXPANSION
 										;
 
 %%
